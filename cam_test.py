@@ -10,6 +10,7 @@ picam2.start()
 
 while True:
     im= picam2.capture_array()
+    im = cv2.flip(im,-1)
     #im = cv2.cvtColor(im,cv2.COLOR_BGR2RGB)
     cv2.imshow("Camera", im)
     if cv2.waitKey(1)==ord('q'):

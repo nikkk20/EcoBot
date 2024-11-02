@@ -15,7 +15,7 @@ from picamera2 import Picamera2
 # COUNTER, FPS = 0, 0
 # START_TIME = time.time()
 picam2 = Picamera2()
-picam2.preview_configuration.main.size = (640,480)
+picam2.preview_configuration.main.size = (640,480)   #w,h
 picam2.preview_configuration.main.format = "RGB888"
 picam2.preview_configuration.align()
 picam2.configure("preview")
@@ -74,19 +74,26 @@ def run(model: str, max_results: int, score_threshold: float,
         # current_frame = image
         # cv2.putText(current_frame, fps_text, text_location, cv2.FONT_HERSHEY_DUPLEX,
         #             font_size, text_color, font_thickness, cv2.LINE_AA)
+        try:
+            if (detection_result_list):
+                final_result.extend([detection_result_list[0].detections[0].categories[0].category_name,
+                                detection_result_list[0].detections[0].categories[0].score,
+                                [detection_result_list[0].detections[0].bounding_box.origin_x,
+                                detection_result_list[0].detections[0].bounding_box.origin_y,
+                                detection_result_list[0].detections[0].bounding_box.width,
+                                detection_result_list[0].detections[0].bounding_box.height]])
+                # ['PLASTIC', 0.5026677846908569, [207, 5, 431, 268]]
+                # category , score, [origin_x,origin_y,width,height]
 
-        if detection_result_list:
-            final_result.extend([detection_result_list[0].detections[0].categories[0].category_name,
-                            detection_result_list[0].detections[0].categories[0].score,
-                            [detection_result_list[0].detections[0].bounding_box.origin_x,
-                             detection_result_list[0].detections[0].bounding_box.origin_y,
-                             detection_result_list[0].detections[0].bounding_box.width,
-                             detection_result_list[0].detections[0].bounding_box.height]])
-            #print(detection_result_list)
-            #current_frame = visualize(current_frame, detection_result_list[0])
-            #detection_frame = current_frame
-            time.sleep(0.2)
-            detection_result_list.clear()
+
+
+                #print(detection_result_list)
+                #current_frame = visualize(current_frame, detection_result_list[0])
+                #detection_frame = current_frame
+                time.sleep(0.2)
+                detection_result_list.clear()
+                final_result.clear()
+        except:
             final_result.clear()
 
         # if detection_frame is not None:
@@ -107,7 +114,7 @@ def main():
         '--model',
         help='Path of the object detection model.',
         required=False,
-        default='detection_model.tflite')
+        default='efficientdet_lite0.tflite')
     parser.add_argument(
         '--maxResults',
         help='Max number of detection results.',
@@ -118,7 +125,7 @@ def main():
         help='The score threshold of detection results.',
         required=False,
         type=float,
-        default=0.25)
+        default=0.1)
     parser.add_argument(
         '--cameraId', help='Id of camera.', required=False, type=int, default=0)
     parser.add_argument(
@@ -138,6 +145,3 @@ def main():
     run(args.model, int(args.maxResults),
         args.scoreThreshold, int(args.cameraId), args.frameWidth, args.frameHeight)
 
-
-if __name__ == '__main__':
-    main()

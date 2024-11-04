@@ -12,13 +12,18 @@ th11.start()
 
 motor_thread = threading.Thread(target=misc.motorDriver)
 motor_thread.start()
-
+mina = 999999999
 while True:
     if(len(objdetector.final_result) > 0):
         #print(objdetector.final_result)
         results = objdetector.final_result
-        misc.isCentered(640,480,objdetector.final_result[2][0],objdetector.final_result[2][1],objdetector.final_result[2][2],objdetector.final_result[2][3])
-        misc.getArea(results[2][2],results[2][3])
+        if results[0] == 'person':
+            #misc.isCentered(640,480,objdetector.final_result[2][0],objdetector.final_result[2][1],objdetector.final_result[2][2],objdetector.final_result[2][3])
+            area = misc.getArea(results[2][2],results[2][3])
+            if (area < mina):
+                mina = area
+            print(mina)
+
 
 # while(True):
 #     misc.driver_motor_running = True

@@ -43,7 +43,7 @@ def isCentered(w,h,origin_x,origin_y,width,height):
 
 def getArea(w,h):
     area = w*h
-    print(area)
+    return area
 
 def motorDriver():
     global driver_motor_running,drive_mode

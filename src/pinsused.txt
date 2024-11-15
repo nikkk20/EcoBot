@@ -1,0 +1,8 @@
+11 - base motor
+12 - shoulder servo
+13 - elbow servo
+19 - motor 1 fw
+21 - motor 1 rw
+22 - motor 2 fw
+23 - motor 2 rw
+24 - steering servo

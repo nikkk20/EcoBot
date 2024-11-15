@@ -15,7 +15,7 @@ def main():
     picam2.start()
     base_options = python.BaseOptions(model_asset_path='efficientdet_lite0.tflite')
     options = vision.ObjectDetectorOptions(base_options=base_options,
-                                        score_threshold=0.5)
+                                        score_threshold=0.25,max_results=1)
     detector = vision.ObjectDetector.create_from_options(options)
     global final_result
 
